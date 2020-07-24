@@ -25,13 +25,18 @@ class CartController extends Controller
          
         if($validator->fails()){
 
+                        dd('a7a');
+
+
              return response()->json(['message' => $validator->errors()->first()]);
 
         }else{
 
+            dd('a7a');
+
             $cart = Cart::where('customer_id',$request->customer_id)->first();
 
-            $s = $cart->products()->attach($request->product_id);
+            $cart->products()->attach($request->product_id);
 
 
 
