@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCartProductsTable extends Migration
+class CreateCartProductTable extends Migration
 {
     /**
      * Run the migrations.
@@ -16,8 +16,7 @@ class CreateCartProductsTable extends Migration
         Schema::create('cart__products', function (Blueprint $table) {
             $table->unsignedInteger('cart_id');
             $table->unsignedInteger('product_id');
-            $table->unsignedInteger('product_quantity');
-            $table->float('product_subtotal');
+            $table->unsignedInteger('product_quantity')->default('1');
             $table->foreign('cart_id')->references('id')->on('carts');
             $table->foreign('product_id')->references('id')->on('products');
 

@@ -16,6 +16,7 @@ class CreateCartsTable extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('customer_id');
+            $table->float('product_subtotal');
             $table->foreign('customer_id')->references('id')->on('customers');
         });
     }

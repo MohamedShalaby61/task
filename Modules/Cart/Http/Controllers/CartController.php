@@ -34,32 +34,28 @@ class CartController extends Controller
 
             $cart = Cart::where('customer_id',$request->customer_id)->first();
 
+
             $cart->products()->attach($request->product_id);
 
 
 
-            // $cart = Cart::create([
-                        
-            //             'customer_id'      => $request->customer_id ,
-
-            //             'product_id'       => $request->product_id ,
-
-            //             'product_quantity' => $request->product_quantity ,
-
-            //             'subtotal_price'   => 5
-
-            //         ]);
-
-            // dd($cart->products);
-
         }
-
-        // } 
-
-
-
 
 
     }
+
+
+
+    public function changeQuantity(){
+
+    }
+
+
+    public function deleteFromCart(){
+
+    }
+
+
+
 
 }
