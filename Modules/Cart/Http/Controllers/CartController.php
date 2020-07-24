@@ -17,7 +17,7 @@ class CartController extends Controller
 
                'customer_id'      => 'required',
 
-               // 'product_id'       => 'required',
+               'product_id'       => 'required',
 
                // 'product_quantity' => 'required|min:1',
         ]);
@@ -29,9 +29,9 @@ class CartController extends Controller
 
         }else{
 
-            $cart = Cart::where('customer_id',$request->customer_id)->get();
+            $cart = Cart::where('customer_id',$request->customer_id)->first();
 
-            dd($cart);
+            $s = $cart->products()->attach($request->product_id);
 
 
 
@@ -47,7 +47,7 @@ class CartController extends Controller
 
             //         ]);
 
-            dd($cart->products);
+            // dd($cart->products);
 
         }
 
