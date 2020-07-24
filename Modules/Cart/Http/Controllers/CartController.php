@@ -17,9 +17,9 @@ class CartController extends Controller
 
                'customer_id'      => 'required',
 
-               'product_id'       => 'required',
+               // 'product_id'       => 'required',
 
-               'product_quantity' => 'required|min:1',
+               // 'product_quantity' => 'required|min:1',
         ]);
 
          
@@ -29,17 +29,23 @@ class CartController extends Controller
 
         }else{
 
-            $cart = Cart::create([
+            $cart = Cart::where('customer_id',$request->customer_id)->get();
+
+            dd($cart);
+
+
+
+            // $cart = Cart::create([
                         
-                        'customer_id'      => $request->customer_id ,
+            //             'customer_id'      => $request->customer_id ,
 
-                        'product_id'       => $request->product_id ,
+            //             'product_id'       => $request->product_id ,
 
-                        'product_quantity' => $request->product_quantity ,
+            //             'product_quantity' => $request->product_quantity ,
 
-                        'subtotal_price'   => 5
+            //             'subtotal_price'   => 5
 
-                    ]);
+            //         ]);
 
             dd($cart->products);
 
