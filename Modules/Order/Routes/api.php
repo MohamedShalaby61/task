@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/order', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/order', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::post('checkout','OrderController@checkout');
+Route::post('change_order_status','OrderController@changeOrderStatus');

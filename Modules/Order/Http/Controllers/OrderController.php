@@ -5,75 +5,115 @@ namespace Modules\Order\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Order\Entities\Order;
+use Modules\Cart\Entities\Cart;
+use Validator;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
-    public function index()
+    
+    public function checkout(Request $request)
     {
-        return view('order::index');
+        if($request->code =='A3000'){
+
+                $validator = Validator::make($request->all(),[
+                   'customer_id'      => 'required|integer',
+                   'code'             => ["regex:(A3000)"],
+                ]);
+
+                if($validator->fails()){
+
+                   return response()->json(['message' => $validator->errors()->first()]);
+
+                }else{
+
+
+                    $cart = Cart::where('customer_id',$request->customer_id)->first();
+
+                    $sub_total = $cart->product_subtotal;
+
+                    $shipping_fees = $sub_total * (5/100);
+
+                    $code_discount = (1/10) * $sub_total ;
+
+                    $final_total   = $sub_total + $shipping_fees - $code_discount;
+
+                    $data = Order::create([
+
+                                'sub_total'     => $cart->product_subtotal ,
+                                'code'          => $request->code ,
+                                'shipping_fees' =>  $shipping_fees,
+                                'status_id'     => 1 ,
+                                'final_total'   => $final_total ,
+
+                            ]);
+
+                    return response()->json(['success' => $data]);
+
+                }
+
+        }else{
+
+                $validator = Validator::make($request->all(),[
+                   'customer_id'      => 'required|integer',
+                ]);
+
+                if($validator->fails()){
+
+                   return response()->json(['message' => $validator->errors()->first()]);
+
+                }else{
+
+                    $cart = Cart::where('customer_id',$request->customer_id)->first();
+
+                    $sub_total = $cart->product_subtotal;
+
+                    $shipping_fees = $sub_total * (5/100);
+
+                    $final_total   = $sub_total + $shipping_fees;
+
+                    $data = Order::create([
+
+                                'sub_total'     => $cart->product_subtotal ,
+                                'code'          => $request->code ,
+                                'shipping_fees' =>  $shipping_fees,
+                                'status_id'     => 1 ,
+                                'final_total'   => $final_total ,
+
+                            ]);
+
+                    return response()->json(['success' => $data]);
+
+                }   
+
+        }
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
-    public function create()
-    {
-        return view('order::create');
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
+    public function changeOrderStatus(Request $request)
     {
-        //
-    }
+        $validator = Validator::make($request->all(),[
+                   'order_id'      => 'required|integer',
+                   'status_id'      => 'required|integer',
+                ]);
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return view('order::show');
-    }
+        if($validator->fails()){
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        return view('order::edit');
-    }
+           return response()->json(['message' => $validator->errors()->first()]);
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        }else{
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+            $order = Order::where('id',$request->order_id)->first();
+
+            $order->update(['status_id' => $request->status_id]);
+
+            return response()->json(['message' => 'status updated successfully']);
+
+        }
+
     }
+        
+
+    
 }
