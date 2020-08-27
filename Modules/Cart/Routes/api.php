@@ -14,3 +14,5 @@ use Illuminate\Http\Request;
 */
 
 Route::post('addtocart' , 'CartController@store');
+Route::post('change_quantity' , 'CartController@changeQuantity');
+Route::post('delete_from_cart' , 'CartController@deleteFromCart');
