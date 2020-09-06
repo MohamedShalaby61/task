@@ -18,7 +18,6 @@ class OrderController extends Controller
 
                 $validator = Validator::make($request->all(),[
                    'customer_id'      => 'required|integer',
-                   'code'             => ["regex:(A3000)"],
                 ]);
 
                 if($validator->fails()){
