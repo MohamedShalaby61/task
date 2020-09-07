@@ -18,6 +18,8 @@ class OrderController extends Controller
 
                 $validator = Validator::make($request->all(),[
                    'customer_id'      => 'required|integer',
+                   'shipping_method'  => 'required',
+                   'payment_method'   => 'required',
                 ]);
 
                 if($validator->fails()){
@@ -31,11 +33,25 @@ class OrderController extends Controller
 
                     $sub_total = $cart->product_subtotal;
 
-                    $shipping_fees = $sub_total * (5/100);
+                    
 
                     $code_discount = (1/10) * $sub_total ;
 
                     $taxes = (1/10) * $sub_total ;
+
+                    if($request->shipping_method == 'Home Delivery' && $request->payment_method == 'Cash On Delivery'){
+
+                       $shipping_fees = $sub_total * (5/100);
+
+                    }elseif($request->shipping_method == 'Pickup From Store' && $request->payment_method == 'Pay At Store'){
+                        
+                        $shipping_fees = 0;
+
+                    }else{
+
+                        return response()->json(['Error' => 'something went wrong , write a correct payment method and shipping method']);
+
+                    }
 
                     $final_total   = $sub_total + $taxes + $shipping_fees - $code_discount;
 
@@ -57,6 +73,8 @@ class OrderController extends Controller
 
                 $validator = Validator::make($request->all(),[
                    'customer_id'      => 'required|integer',
+                   'shipping_method'  => 'required',
+                   'payment_method'   => 'required',
                 ]);
 
                 if($validator->fails()){
@@ -69,9 +87,21 @@ class OrderController extends Controller
 
                     $sub_total = $cart->product_subtotal;
 
-                    $shipping_fees = $sub_total * (5/100);
-
                     $taxes = (1/10) * $sub_total ;
+
+                    if($request->shipping_method == 'Home Delivery' && $request->payment_method == 'Cash On Delivery'){
+
+                       $shipping_fees = $sub_total * (5/100);
+
+                    }elseif($request->shipping_method == 'Pickup From Store' && $request->payment_method == 'Pay At Store'){
+                        
+                        $shipping_fees = 0;
+
+                    }else{
+
+                        return response()->json(['Error' => 'something went wrong , write a correct payment method and shipping method']);
+
+                    }
 
                     $final_total   = $sub_total + $taxes + $shipping_fees;
 
