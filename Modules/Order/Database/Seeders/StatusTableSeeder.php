@@ -4,6 +4,7 @@ namespace Modules\Order\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class StatusTableSeeder extends Seeder
 {

@@ -35,7 +35,9 @@ class OrderController extends Controller
 
                     $code_discount = (1/10) * $sub_total ;
 
-                    $final_total   = $sub_total + $shipping_fees - $code_discount;
+                    $taxes = (1/10) * $sub_total ;
+
+                    $final_total   = $sub_total + $taxes + $shipping_fees - $code_discount;
 
                     $data = Order::create([
 
@@ -69,7 +71,9 @@ class OrderController extends Controller
 
                     $shipping_fees = $sub_total * (5/100);
 
-                    $final_total   = $sub_total + $shipping_fees;
+                    $taxes = (1/10) * $sub_total ;
+
+                    $final_total   = $sub_total + $taxes + $shipping_fees;
 
                     $data = Order::create([
 
